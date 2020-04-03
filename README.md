@@ -1,0 +1,2 @@
+# RhythmMaster2MalodySlide
+节奏大师谱面转Malody谱面的slide模式。
