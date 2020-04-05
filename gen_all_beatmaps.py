@@ -35,7 +35,7 @@ song_list = {
     "please": "Please",
     "megaburn": "心跳倒计时",
     "ineffabilis": "Ineffabilis",
-    "doubleagent":"双重间谍",
+    "doubleagent": "双重间谍",
     "rolypoly": "Roly Poly"
 }
 

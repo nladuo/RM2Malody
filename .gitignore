@@ -1,4 +1,5 @@
 .idea
 tmp/
+__pycache__
 *.txt
 *.mc

@@ -77,11 +77,11 @@ def convert_imd_to_mc_slide(song, ch_name):
             span = param*64
             for i in range(1, 3):
                 x = int(col_list[track] + span*i/2)
-                t = time + int(i*one_beat/32)
+                t = time + int(i*one_beat/16)
                 _notes.append({
                     "beat": [int(t / one_beat), int((t % one_beat) / one_beat * 1000), 1000],
                     "x": x,
-                    # "w": 62,
+                    "w": 62,
                     "type": 4
                 })
             notes += _notes
@@ -111,6 +111,8 @@ def convert_imd_to_mc_slide(song, ch_name):
                 id_selected.append(i)
             else:
                 last_note = one_slide[-1]
+                if last_note[2] == note[2]:
+                    continue
                 if note[3] <= 3:
                     if ((last_note[0] + last_note[3]) == note[0]) and (last_note[1] == note[1]):
                         one_slide.append(note)
@@ -125,6 +127,8 @@ def convert_imd_to_mc_slide(song, ch_name):
                     if (last_note[0] == note[0]) and ((last_note[1] + last_note[3]) == note[1]):
                         one_slide.append(note)
                         id_selected.append(i)
+            if (note[2] == 162) or (note[2] == 161):
+                break
 
         slides.append(one_slide)
     # print(slides)
@@ -148,13 +152,13 @@ def convert_imd_to_mc_slide(song, ch_name):
             notes.append(note)
             _notes = []
             span = param * 55
-            for i in range(1, 4):
-                x = int(col_list[track] + span * i / 3)
-                t = time + int(i * one_beat / 32)
+            for i in range(1, 3):
+                x = int(col_list[track] + span*i/2)
+                t = time + int(i*one_beat/16)
                 _notes.append({
                     "beat": [int(t / one_beat), int((t % one_beat) / one_beat * 1000), 1000],
                     "x": x,
-                    "w": 90,
+                    "w": 62,
                     "type": 4
                 })
             notes += _notes
@@ -206,11 +210,30 @@ def convert_imd_to_mc_slide(song, ch_name):
 
             index += 1
             if index >= _len:
+                [time, track, action, param] = next_note
+                if param < 3:
+                    pass
+                else:
+                    _t = time + param - start_t
+                    note["seg"].append({
+                        "beat": [int(_t / one_beat), int((_t % one_beat) / one_beat * 1000), 1000],
+                        "x": start_offset,
+                        "w": 90,
+                    })
                 break
             [time, track, action, param] = one_slide[index]
             index += 1
 
             if index >= _len:
+                if param < 3:
+                    pass
+                else:
+                    _t = time + param - start_t
+                    note["seg"].append({
+                        "beat": [int(_t / one_beat), int((_t % one_beat) / one_beat * 1000), 1000],
+                        "x": start_offset,
+                        "w": 90,
+                    })
                 break
             else:
                 next_note = one_slide[index]
@@ -241,7 +264,8 @@ def convert_imd_to_mc_slide(song, ch_name):
             "time": 1553609049,
             "song": {
                 "title": "节奏大师4k官谱转谱",
-                "artist": "",
+                # "title": f"{ch_name}",
+                "artist": "节奏大师",
                 "id": 0
             },
             "mode_ext": {}
